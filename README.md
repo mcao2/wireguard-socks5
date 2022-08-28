@@ -10,22 +10,22 @@ This is arguably the easiest way to achieve "app based" routing. For example, yo
 
 ## Usage
 
-Preferably, using `start` in this repository:
-```bash
-bash start.sh /directory/containing/your/wireguard/conf/file
-```
-
-Alternatively, you can use `docker run` directly if you want to customize things such as port mapping:
+### Build the docker
 
 ```bash
-docker run -it --rm --cap-add=NET_ADMIN \
-    --name wireguard-socks-proxy \
-    --volume /directory/containing/your/wireguard/conf/file/:/etc/wireguard/:ro \
-    -p 1080:1080 \
-    kizzx2/wireguard-socks-proxy
+podman build -t wireguard-socks5:latest-arm .
 ```
 
-Then connect to SOCKS proxy through through `127.0.0.1:1080` (or `local.docker:1080` for Mac / docker-machine / etc.). For example:
+```bash
+podman run --rm -d \
+    --name=wireguard-socks-proxy \
+    --device=/dev/net/tun --cap-add=NET_ADMIN --privileged \
+    --publish 127.0.0.1:1080:1080 \
+    --volume /my/dir/to/wireguard:/etc/wireguard:z \
+    wireguard-socks5:latest-arm
+```
+
+Then connect to SOCKS proxy through through `127.0.0.1:1080`. For example:
 
 ```bash
 curl --proxy socks5h://127.0.0.1:1080 ipinfo.io
