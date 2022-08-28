@@ -44,3 +44,12 @@ hpts -s 127.0.0.1:1080 -p 8080
 ### I get "Permission Denied"
 
 This can happen if your WireGuard configuration file includes an IPv6 address but your host interface does not work with it. Try removing the IPv6 address in `Address` from your configuration file.
+
+### I get "could not resolve hostname "tap0": Name does not resolve."
+
+This means you have a different ethernet interface in the container. You can enter the container and check the real interface name:
+
+```shell
+podman run --rm -it --entrypoint /bin/sh --volume /my/dir/to/wireguard:/etc/wireguard:z wireguard-socks5:latest-arm
+ifconfig # check your ethernet interface name and modify file `sockd.conf` and rebuild the docker
+```
