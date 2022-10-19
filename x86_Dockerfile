@@ -1,0 +1,18 @@
+# Expose a WireGuard connection as SOCKS5 proxy
+# x86 version
+# ref: https://www.procustodibus.com/blog/2021/11/wireguard-containers/#image-details
+
+FROM alpine:latest
+
+RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+  && apk add --update-cache dante-server wireguard-tools openresolv ip6tables linux-headers \
+  && rm -rf /var/cache/apk/*
+
+COPY ./sockd.conf /etc/
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN \
+  sed -i 's/^\(tty\d\:\:\)/#\1/' /etc/inittab && \
+  sed -i 's/cmd sysctl -q \(.*\?\)=\(.*\)/[[ "$(sysctl -n \1)" != "\2" ]] \&\& \0/' /usr/bin/wg-quick
+
+ENTRYPOINT "/entrypoint.sh"
