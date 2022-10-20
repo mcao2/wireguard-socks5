@@ -10,4 +10,8 @@ RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositor
 COPY ./sockd.conf /etc/
 COPY ./entrypoint.sh /entrypoint.sh
 
+RUN \
+  sed -i 's/^\(tty\d\:\:\)/#\1/' /etc/inittab && \
+  sed -i 's/cmd sysctl -q \(.*\?\)=\(.*\)/[[ "$(sysctl -n \1)" != "\2" ]] \&\& \0/' /usr/bin/wg-quick
+
 ENTRYPOINT "/entrypoint.sh"
