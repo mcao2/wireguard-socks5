@@ -15,4 +15,6 @@ RUN \
   sed -i 's/^\(tty\d\:\:\)/#\1/' /etc/inittab && \
   sed -i 's/cmd sysctl -q \(.*\?\)=\(.*\)/[[ "$(sysctl -n \1)" != "\2" ]] \&\& \0/' /usr/bin/wg-quick
 
+EXPOSE 1080
+
 ENTRYPOINT "/entrypoint.sh"
