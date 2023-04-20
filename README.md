@@ -17,6 +17,9 @@ podman build -t docker.io/tobosdf/wireguard-socks5:latest-arm .
 
 # or
 podman build -t docker.io/tobosdf/wireguard-socks5:latest-arm-v4v6 .
+
+# or
+docker build -t docker.io/tobosdf/wireguard-socks5:latest-v4v6 -f x86_Dockerfile .
 ```
 
 ```bash
