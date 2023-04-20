@@ -13,7 +13,14 @@ This is arguably the easiest way to achieve "app based" routing. For example, yo
 ### Build the docker
 
 ```bash
-podman build -t wireguard-socks5:latest-arm .
+podman build -t docker.io/tobosdf/wireguard-socks5:latest-arm .
+
+# or
+podman build -t docker.io/tobosdf/wireguard-socks5:latest-arm-v4v6 .
+```
+
+```bash
+podman run -it --rm --entrypoint bash docker.io/tobosdf/wireguard-socks5:latest-arm-v4v6
 ```
 
 ```bash
